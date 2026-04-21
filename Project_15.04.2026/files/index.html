@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeeLab — Вход в систему</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        ☕ CoffeeLab <span class="badge">Auth</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="active">Вход</a>
+        <a href="main.html">Каталог</a>
+        <a href="cart.html">Себет</a>
+        <a href="tools.html">Кері байланыс</a>
+      </div>
+      <div class="userbox">
+        <button id="themeBtn" class="btn-ghost" title="Тақырыпты өзгерту"
+          style="padding:4px 8px; border-radius:8px; border:none;">🌞</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="auth-wrapper">
+      <div class="card" id="authContainer">
+        <h2>Қош келдіңіз</h2>
+        <p class="muted" style="margin-bottom:24px;"> Мәзірге өту үшін жүйеге кіріңіз немесе тіркеліңіз.</p>
+
+        <div class="auth-tabs">
+          <div class="auth-tab active" id="showLogin">Кіру</div>
+          <div class="auth-tab" id="showReg">Тіркелу
+          </div>
+        </div>
+
+        <div id="authMsg" class="notice hidden" style="margin-bottom:20px;"></div>
+
+        <!-- Login Form -->
+        <div class="auth-form" id="tabLogin">
+          <form id="loginForm" action="javascript:void(0);">
+            <label>Email</label>
+            <input id="loginEmail" name="email" type="email" placeholder="you@mail.com" required>
+
+            <label>Пароль</label>
+            <input id="loginPass" name="password" type="password" placeholder="••••••••" required>
+
+            <button class="btn" id="loginBtn" type="submit" style="width:100%; margin-top:20px;">Жалғастыру
+            </button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-form hidden" id="tabReg">
+          <form id="registerForm" action="javascript:void(0);">
+            <label>Атыңыз </label>
+            <input id="regName" name="name" type="text" placeholder="Например, Ayan" required>
+
+            <label>Email</label>
+            <input id="regEmail" name="email" type="email" placeholder="you@mail.com" required>
+
+            <label>Пароль</label>
+            <input id="regPass" name="password" type="password" placeholder="Минимум 4 символа" minlength="4" required>
+
+            <button id="regBtn" class="btn" type="submit" style="width:100%; margin-top:20px;">Создать аккаунт</button>
+          </form>
+        </div>
+
+      </div>
+      <div class="muted small" style="margin-top:20px;">
+        Ваши данные безопасно сохраняются в памяти браузера (localStorage).
+      </div>
+    </div>
+  </div>
+<!-- вставка -->
+
+<!-- вставка -->
+
+</body>
+
+</html>

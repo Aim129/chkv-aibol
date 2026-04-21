@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeeLab — Лаборатория</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">☕ CoffeeLab</div>
+      <div class="nav-links">
+        <a href="main.html">Каталог</a>
+        <a href="cart.html">Корзина (<span data-cartcount>0</span>)</a>
+        <a href="tools.html" class="active">Лаборатория</a>
+        <a href="profile.html">Профиль</a>
+      </div>
+      <div class="userbox">
+        <img id="navAvatar" src="" alt=""
+          style="display:none; width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid var(--accent);">
+        <span style="font-size:18px;" id="navAvatarDefault">👤</span>
+        Привет, <strong data-username>—</strong>
+        <button id="themeBtn" class="btn-ghost" title="Сменить тему"
+          style="padding:4px 8px; margin-left:8px; border-radius:8px; border:none;">🌞</button>
+        <button class="btn-ghost btn-sm" data-logout title="Выйти" style="padding:4px 8px; margin-left:8px;">🚪</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" id="toolsRoot">
+    <div style="text-align:center; margin-bottom:40px;">
+      <h1>Секретные материалы CoffeeLab 🧪</h1>
+      <p class="muted">Проходите тесты, оставляйте отзывы и получайте бонусы.</p>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));">
+
+      <!-- Sentiment Analysis -->
+      <div class="card">
+        <h2>💬 Отзыв директору</h2>
+        <p class="muted">Умный ИИ прочитает ваш отзыв и передаст управляющему нужную реакцию.</p>
+        <form id="sentForm">
+          <label>Ваш честный отзыв</label>
+          <input id="sentText" type="text" placeholder="Например: Ваш раф просто божественен!" required>
+
+          <hr class="sep">
+
+          <label>Оставьте пожелание бариста</label>
+          <input id="followA" type="text" placeholder='Например: "Улыбайтесь чаще!"'>
+
+          <div style="margin-top:20px;">
+            <button class="btn" type="submit" style="width:100%">Отправить отзыв</button>
+          </div>
+        </form>
+        <div id="sentOut" class="notice hidden" style="margin-top:16px;"></div>
+      </div>
+
+      <!-- File Downloading -->
+      <div class="card">
+        <h2>📥 Медиа-кит</h2>
+        <p class="muted">Материалы для истинных кофеманов. Нажмите на нужные пункты, чтобы скачать файлы-образцы.</p>
+
+        <form id="downloadForm">
+          <div class="notice" style="margin-bottom:20px;">
+            <b>Коллекция CoffeeLab</b>
+          </div>
+
+          <label class="opt">
+            <input type="checkbox" data-url="https://images.unsplash.com/photo-1497935586351-b67a49e012bf"
+              data-fn="coffeelab-wallpaper.jpg">
+            <span>Эстетичные обои (JPG)</span>
+          </label>
+
+          <label class="opt">
+            <input type="checkbox" data-url="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+              data-fn="coffeelab-menu.pdf">
+            <span>Секретное меню (PDF)</span>
+          </label>
+
+          <label class="opt">
+            <input type="checkbox"
+              data-url="https://file-examples.com/storage/fe9d3b2e8b0d2e9dfb1f0b4/2018/04/file_example_MP4_480_1_5MG.mp4"
+              data-fn="promo-video.mp4">
+            <span>Промо-рецепт (MP4)</span>
+          </label>
+        </form>
+      </div>
+
+      <!-- Quiz -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h2>🎓 Экзамен на Кофемана</h2>
+        <p class="muted">Проверьте свои знания о кофе! Ответьте правильно на 4 вопроса из 5, чтобы получить статус <b
+            style="color:var(--accent2)">"Кофеман"</b> и постоянную скидку 10% на все заказы.</p>
+
+        <form id="quizForm" style="margin-top:24px;">
+          <div id="quizBox" class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));"></div>
+          <div style="margin-top:24px; display:flex; gap:16px;">
+            <button class="btn" type="submit">Узнать результат</button>
+            <button class="btn-ghost" type="reset">Сбросить</button>
+          </div>
+        </form>
+
+        <div id="quizOut" class="notice hidden" style="margin-top:20px;"></div>
+      </div>
+    </div>
+  </div>
+<!-- Чат бот  -->
+<div class="card" id="chatbotRoot">
+  <h2>AI Чат-бот</h2>
+  <p class="muted">Сұрақ жазыңыз немесе дауыспен айтыңыз.</p>
+
+  <div id="chatMessages" style="max-height: 350px; overflow-y: auto; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px;"></div>
+
+  <div class="row">
+    <input id="chatInput" type="text" placeholder="Мысалы: қандай кофе ұсынасыз?" />
+    <button id="" class="btn-ghost" type="button">🎤</button>
+  </div>
+
+  <div class="row" style="margin-top: 12px;">
+    <button id="ai-send" class="btn" type="button">Жіберу</button>
+    <button id="ai-clear" class="btn-danger" type="button">Тазалау</button>
+  </div>
+
+  <div id="voiceStatus" class="muted small" style="margin-top: 10px;"></div>
+</div>
+</body>
+<script src="ai.js"></script>
+</html>

@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Aibol",
+      "email": "aibolaimakhan0.2@gmail.com",
+      "salt": "633eea07b7c7277d6b98041d45b18e20",
+      "password_hash": "e903c3bb07ecf31020d95b4961f108a8eb013b8e27ea093bbda3f69acdc695fa",
+      "avatar_ext": ".jpg",
+      "created_at": "2026-04-01T11:58:37.375064Z"
+    }
+  ]
+}

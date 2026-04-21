@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeeLab — Тапсырысты рәсімдеу</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">☕ CoffeeLab</div>
+      <div class="nav-links">
+        <a href="main.html">Каталог</a>
+        <a href="cart.html" class="active">Себет (<span data-cartcount>0</span>)</a>
+        <a href="tools.html">Лаборатория</a>
+        <a href="profile.html">Профиль</a>
+      </div>
+      <div class="userbox">
+        <img id="navAvatar" src="" alt=""
+          style="display:none; width:28px; height:28px; border-radius:50%; object-fit:cover; border:2px solid var(--accent);">
+        <span style="font-size:18px;" id="navAvatarDefault">👤</span>
+        Сәлем, <strong data-username>—</strong>
+        <button id="themeBtn" class="btn-ghost" title="Сменить тему"
+          style="padding:4px 8px; margin-left:8px; border-radius:8px; border:none;">🌞</button>
+        <button class="btn-ghost btn-sm" data-logout title="Выйти" style="padding:4px 8px; margin-left:8px;">🚪</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="cartMsg" class="hidden" style="margin-bottom:20px;"></div>
+
+    <div class="catalog-header">
+      <!-- Cart Items -->
+      <div class="card">
+        <h2>Себет 🛒</h2>
+        <p class="muted">Төлем жасамас бұрын тапсырысыңызды тексеріңіз.</p>
+        <hr class="sep">
+
+        <div id="cartList" class="flex-col"></div>
+      </div>
+
+      <!-- Checkout Actions -->
+      <div class="card" id="cartActions" style="position:sticky; top:90px;">
+        <h3>Тапсырыс қорытындысы</h3>
+
+        <div id="discountRow" style="margin-bottom:12px; font-weight:600;"></div>
+
+        <div class="notice" style="margin-bottom:20px; font-size:18px;">
+          Төленетін сома: <b id="totalSum" style="color:var(--accent);">0 ₸</b>
+        </div>
+
+        <label>Төлем әдісі</label>
+        <select id="payMethod">
+          <option value="Card">Банк картасы</option>
+          <option value="QR">Kaspi QR / Halyk QR</option>
+          <option value="Cash">Қолма-қол ақшамен (алған кезде)</option>
+        </select>
+
+        <!-- Dynamic area for payment details -->
+        <div id="payArea"></div>
+
+        <label style="margin-top:20px;">Тапсырысқа пікір (немесе «Тапсырысқа түсініктеме»)</label>
+        <textarea rows="3" placeholder="Мысалы: баламалы сүт қосылған кофе, сиропсыз..."></textarea>
+
+        <div class="flex-col" style="margin-top:20px;">
+          <button class="btn" id="placeOrder" style="font-size:16px;">Төлеу және рәсімдеу</button>
+          <button class="btn-ghost" id="clearCart">Себетті тазарту</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

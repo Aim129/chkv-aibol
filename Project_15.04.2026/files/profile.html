@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoffeeLab — Профиль</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .avatar-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .avatar-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      overflow: hidden;
+      background: var(--box-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s;
+    }
+    .avatar-ring img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .avatar-ring:hover { box-shadow: var(--shadow-hover); }
+    .avatar-hint {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 15px;
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-row .label { color: var(--muted); font-size: 13px; }
+    .profile-row .value { font-weight: 600; }
+    .coffeeman-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16,185,129,.12);
+      border: 1px solid rgba(16,185,129,.4);
+      color: #059669;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .avatar-msg {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+    .avatar-msg.ok  { background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.4); color: #065f46; }
+    .avatar-msg.bad { background: rgba(251,113,133,.1); border: 1px solid rgba(251,113,133,.4); color: #9f1239; }
+  </style>
+</head>
+<body>
+
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">☕ CoffeeLab</div>
+      <div class="nav-links">
+        <a href="main.html">Каталог</a>
+        <a href="cart.html">Себет</a>
+        <a href="tools.html">Лаборатория</a>
+        <a href="profile.html" class="active">Профиль</a>
+      </div>
+      <div class="userbox">
+        <span id="navName">—</span>
+        <button id="logoutBtn" class="btn-danger btn-sm">Шығу</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="max-width: 560px;">
+
+    <div class="card" style="margin-bottom: 20px;">
+      <h2 style="margin-bottom: 20px;">🖼 Профиль суреті</h2>
+
+      <div class="avatar-wrap">
+        <div class="avatar-ring" id="avatarRing" title="Суретке басыңыз">
+          <span id="avatarEmoji">☕</span>
+          <img id="avatarImg" alt="avatar">
+        </div>
+        <div class="avatar-hint">
+          Суретке басыңыз немесе файлды тастаңыз<br>
+          <span style="font-size:12px;">JPEG, PNG, GIF, WEBP · макс. 5 МБ</span>
+        </div>
+      </div>
+
+      <input type="file" id="avatarFile" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none;">
+
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <button class="btn" id="pickBtn">📁 Сурет таңдау</button>
+        <button class="btn-ghost" id="removeBtn" style="display:none;">🗑 Өшіру</button>
+      </div>
+
+      <div class="avatar-msg" id="avatarMsg"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin-bottom: 16px;">📋 Аккаунт</h2>
+
+      <div class="profile-row">
+        <span class="label">Аты</span>
+        <span class="value" id="infoName">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="label">Email</span>
+        <span class="value" id="infoEmail">—</span>
+      </div>
+      <div class="profile-row">
+        <span class="label">Мәртебе</span>
+        <span class="value" id="infoStatus">—</span>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button class="btn-danger" id="logoutBtn2" style="width:100%;">🚪 Шығу</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const API       = "http://127.0.0.1:5050";
+    const TOKEN_KEY = "user";
+
+    // 1. Проверяем токен
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) {
+      // window.location.href = "index.html";
+    }
+
+    // 2. Загружаем данные пользователя
+    async function loadUser() {
+      try {
+        const res  = await fetch(API + "/api/me", {
+          headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          localStorage.removeItem(TOKEN_KEY);
+          // window.location.href = "index.html";
+          return;
+        }
+
+        document.getElementById("navName").textContent   = data.name;
+        document.getElementById("infoName").textContent  = data.name;
+        document.getElementById("infoEmail").textContent = data.email;
+
+        const cu = JSON.parse(localStorage.getItem("currentUser") || "{}");
+        const statusEl = document.getElementById("infoStatus");
+        if (cu.isCoffeeman) {
+          statusEl.innerHTML = '<span class="coffeeman-badge">🏆 Кофеман — 10% жеңілдік</span>';
+        } else {
+          statusEl.textContent = "Тұрақты тұтынушы";
+        }
+
+        if (data.avatar_url) {
+          showAvatar(API + data.avatar_url);
+        }
+
+      } catch (e) {
+        showMsg("Сервермен байланыс жоқ.", false);
+      }
+    }
+
+    // 3. Аватар
+    function showAvatar(url) {
+      const img   = document.getElementById("avatarImg");
+      const emoji = document.getElementById("avatarEmoji");
+      img.src             = url + "?t=" + Date.now();
+      img.style.display   = "block";
+      emoji.style.display = "none";
+      document.getElementById("removeBtn").style.display = "";
+    }
+
+    function showDefault() {
+      const img   = document.getElementById("avatarImg");
+      const emoji = document.getElementById("avatarEmoji");
+      img.style.display   = "none";
+      img.src             = "";
+      emoji.style.display = "";
+      document.getElementById("removeBtn").style.display = "none";
+    }
+
+    function showMsg(text, ok) {
+      const el = document.getElementById("avatarMsg");
+      el.textContent   = text;
+      el.className     = "avatar-msg " + (ok ? "ok" : "bad");
+      el.style.display = "block";
+      setTimeout(() => { el.style.display = "none"; }, 4000);
+    }
+
+    // 4. Загрузка файла
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload  = () => resolve(r.result);
+        r.onerror = reject;
+        r.readAsDataURL(file);
+      });
+    }
+
+    function validateFile(file) {
+      const allowed = ["image/jpeg","image/png","image/gif","image/webp"];
+      if (!allowed.includes(file.type)) {
+        showMsg("Тек JPEG, PNG, GIF, WEBP форматтары!", false);
+        return false;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        showMsg("Файл 5 МБ-тан аспауы керек!", false);
+        return false;
+      }
+      return true;
+    }
+
+    async function uploadFile(file) {
+      if (!validateFile(file)) return;
+      const b64 = await fileToBase64(file);
+      try {
+        const res  = await fetch(API + "/api/avatar/upload", {
+          method:  "POST",
+          headers: {
+            "Content-Type":  "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ image: b64 })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          showAvatar(API + data.avatar_url);
+          showMsg("Сурет сатти жуктелди!", true);
+        } else {
+          showMsg(data.message || "Кате.", false);
+        }
+      } catch {
+        showMsg("Сервермен байланыс катесi.", false);
+      }
+    }
+
+    // 5. Обработчики
+    const fileInput = document.getElementById("avatarFile");
+
+    document.getElementById("avatarRing").addEventListener("click", () => fileInput.click());
+    document.getElementById("pickBtn").addEventListener("click",    () => fileInput.click());
+
+    fileInput.addEventListener("change", () => {
+      const file = fileInput.files[0];
+      if (file) uploadFile(file);
+      fileInput.value = "";
+    });
+
+    document.getElementById("removeBtn").addEventListener("click", showDefault);
+
+    const ring = document.getElementById("avatarRing");
+    ring.addEventListener("dragover", e => e.preventDefault());
+    ring.addEventListener("drop", e => {
+      e.preventDefault();
+      const file = e.dataTransfer?.files[0];
+      if (file) uploadFile(file);
+    });
+
+    // 6. Выход
+    function doLogout() {
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem("currentUser");
+      window.location.href = "index.html";
+    }
+    document.getElementById("logoutBtn").addEventListener("click",  doLogout);
+    document.getElementById("logoutBtn2").addEventListener("click", doLogout);
+
+    // Запуск
+    loadUser();
+  </script>
+</body>
+</html>
